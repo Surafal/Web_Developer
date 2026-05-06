@@ -1,0 +1,57 @@
+{
+  "name": "ui-tester",
+  "version": "1.0.3",
+  "description": "UI Testing application for batch document uploads using browser automation",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "build": "electron-builder --win portable",
+    "build:installer": "electron-builder --win nsis"
+  },
+  "keywords": [
+    "ui-testing",
+    "automation",
+    "selenium",
+    "electron",
+    "document-upload"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^40.0.0",
+    "electron-builder": "^26.4.0",
+    "chromedriver": "^133.0.0"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.20.0"
+  },
+  "build": {
+    "appId": "com.personal.uitester",
+    "productName": "UI Tester",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "LICENSE"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "UITester-${version}.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "UITester-Setup-${version}.exe"
+    }
+  }
+}

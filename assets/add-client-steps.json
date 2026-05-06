@@ -1,0 +1,227 @@
+{
+  "targetUrl": "https://bridger.us-bridger-nonprod.azure.lnrsg.io/xgauth/",
+  "uploadSelector": "input[type='file']",
+  "submitSelector": "",
+  "waitAfterUpload": "2000",
+  "waitAfterSubmit": "3000",
+  "headless": false,
+  "loopMode": "perUpload",
+  "keepBrowserOpen": true,
+  "dataDrivenMode": true,
+  "initialSteps": [
+    {
+      "action": "click",
+      "description": "Click username field",
+      "enabled": true,
+      "selector": "id=UserName",
+      "selectorType": "id",
+      "force": false
+    },
+    {
+      "action": "type",
+      "description": "Enter username credential",
+      "enabled": true,
+      "selector": "id=UserName",
+      "selectorType": "id",
+      "value": "syssurafal1",
+      "isSecret": false
+    },
+    {
+      "action": "click",
+      "description": "Clicked Next",
+      "enabled": true,
+      "selector": "id=Next",
+      "selectorType": "id",
+      "force": false
+    },
+    {
+      "action": "click",
+      "description": "Click Password Field",
+      "enabled": true,
+      "selector": "id=Password",
+      "selectorType": "id",
+      "force": false
+    },
+    {
+      "action": "type",
+      "description": "Entered user password",
+      "enabled": true,
+      "selector": "id=Password",
+      "selectorType": "id",
+      "value": "abc123$$@@@@@@",
+      "isSecret": false
+    },
+    {
+      "action": "click",
+      "description": "Click Next button",
+      "enabled": true,
+      "selector": "id=Next",
+      "selectorType": "id",
+      "force": false
+    },
+    {
+      "action": "pause",
+      "description": "wait for user to enter MFA",
+      "enabled": true
+    }
+  ],
+  "perUploadSteps": [
+    {
+      "action": "click",
+      "description": "Click Add Client Button (To Open Form)",
+      "enabled": true,
+      "selector": "id=AddClientButton",
+      "selectorType": "id",
+      "force": true
+    },
+    {
+      "action": "fill",
+      "selector": "id=CustomerFullName",
+      "value": "{{ClientName}}",
+      "description": "Enter Client Name",
+      "enabled": true
+    },
+    {
+      "action": "fill",
+      "selector": "id=CustomerLoginName",
+      "value": "{{ClientID}}",
+      "description": "Enter Client ID",
+      "enabled": true
+    },
+    {
+      "action": "select",
+      "selector": "id=IsInternalAccount",
+      "value": "{{AccountType}}",
+      "description": "Select Account Type (External/Internal)",
+      "enabled": true
+    },
+    {
+      "action": "fill",
+      "selector": "id=BillingGroup",
+      "value": "{{BillingGroup}}",
+      "description": "Enter Billing Group",
+      "enabled": true
+    },
+    {
+      "action": "fill",
+      "selector": "id=ProductCode",
+      "value": "{{ProductCode}}",
+      "description": "Enter 16-digit Product Code",
+      "enabled": true
+    },
+    {
+      "action": "check",
+      "selector": "id=ScreeningListCapable",
+      "value": "{{ScreeningListCapable}}",
+      "description": "Check Screening List Capabilities",
+      "enabled": true,
+      "force": true
+    },
+    {
+      "action": "check",
+      "selector": "id=InstantIdCapable",
+      "value": "{{InstantIdCapable}}",
+      "description": "Check LexisNexis Instant ID Capabilities",
+      "enabled": true,
+      "force": true
+    },
+    {
+      "action": "check",
+      "selector": "id=FraudPointCapable",
+      "value": "{{FraudPointCapable}}",
+      "description": "Check FraudPoint Capabilities",
+      "enabled": true,
+      "force": true
+    },
+    {
+      "action": "fill",
+      "selector": "id=Admin_FullName",
+      "value": "{{AdminFullName}}",
+      "description": "Enter Admin Full Name",
+      "enabled": true
+    },
+    {
+      "action": "fill",
+      "selector": "id=Admin_LoginName",
+      "value": "{{AdminLogin}}",
+      "description": "Enter Admin Login Name",
+      "enabled": true
+    },
+    {
+      "action": "fill",
+      "description": "Enter Admin Password",
+      "enabled": true,
+      "selector": "id=Admin_Password",
+      "selectorType": "css",
+      "value": "{{Password}}",
+      "isSecret": true
+    },
+    {
+      "action": "fill",
+      "description": "Confirm Admin Password",
+      "enabled": true,
+      "selector": "id=Admin_ConfirmPassword",
+      "selectorType": "css",
+      "value": "{{Password}}",
+      "isSecret": true
+    },
+    {
+      "action": "fill",
+      "selector": "id=Admin_EmailAddress",
+      "value": "{{AdminEmail}}",
+      "description": "Enter Admin Email",
+      "enabled": true
+    },
+    {
+      "action": "fill",
+      "selector": "id=Admin_ConfirmEmailAddress",
+      "value": "{{AdminEmail}}",
+      "description": "Confirm Admin Email",
+      "enabled": true
+    },
+    {
+      "action": "select",
+      "selector": "id=DatabaseIdentifier",
+      "value": "system_multidb",
+      "description": "Select Database Identifier",
+      "enabled": true
+    },
+    {
+      "action": "select",
+      "selector": "id=PortfolioDatabaseIdentifier",
+      "value": "Portfolio_MultiDB",
+      "description": "Select Portfolio Database",
+      "enabled": true
+    },
+    {
+      "action": "click",
+      "selector": "id=AddClientButton",
+      "description": "Click Add Client Button (Submit Form)",
+      "enabled": true
+    },
+    {
+      "action": "wait",
+      "duration": 3000,
+      "description": "Wait for processing",
+      "enabled": true
+    },
+    {
+      "action": "click",
+      "description": "Click Cancel Button to navigate back to Dashboard",
+      "enabled": true,
+      "selector": "id=cancelTopBtn",
+      "selectorType": "id",
+      "force": false
+    },
+    {
+      "action": "waitForSelector",
+      "description": "Wait for Dashboard (Loop Start State)",
+      "enabled": true,
+      "selector": "id=AddClientButton",
+      "selectorType": "id",
+      "force": false
+    }
+  ],
+  "postUploadSteps": [],
+  "folderPath": "C:\\TestData"
+}
