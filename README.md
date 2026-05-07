@@ -1,135 +1,61 @@
-# UI Tester
+Master Prompt: Accessibility Audit & Compliance Dashboard
 
-A desktop application for automated testing of web UI document upload functionality. Built with Electron and Playwright, this tool allows you to batch upload JSON and CSV documents to web applications with full browser automation.
+ 
 
-## Features
+  Objective:
+  Create a full-stack dashboard (FastAPI backend, Vanilla JS/Tailwind frontend) to visualize and manage accessibility audit reports (JSON) and visual evidence (Screenshots/ZIPs).
 
-- 📁 **Folder Selection**: Browse and select folders containing your test documents
-- 📄 **Document Preview**: Preview JSON and CSV files before uploading
-- 🔧 **Custom Steps**: Add pre-upload automation steps (login, navigation, etc.)
-- 🎭 **Browser Automation**: Powered by Playwright for reliable browser control
-- 📊 **Progress Tracking**: Real-time progress updates and logging
-- ⚙️ **Configurable**: Customizable selectors, wait times, and headless mode
-- 💾 **Config Persistence**: Saves your configuration for next session
+ 
 
-## Prerequisites
+  1. Core Requirements & Data Structure:
+   * Input: The app must parse JSON files containing pageUrl, violations (with nodes and impact), and summary.
+   * Screenshot Linking: Screenshots are stored in a dedicated folder. Link them to reports by folder name or fuzzy matching of the JSON filename.
+   * Functional Areas: Group reports by their parent directory name. Individual file uploads should be labeled as "Single Upload."
 
-- Node.js 18+ installed
-- npm or yarn package manager
+ 
 
-## Installation
+  2. Backend (FastAPI + Python):
+   * Endpoints:
+       * POST /api/import: Support multi-file uploads (JSON, ZIP screenshot bundles, and raw Images). Extract ZIPs into the screenshot directory.
+       * POST /api/sync-workspace: Automatically scan the local project for existing .json and .zip files to populate the dashboard.
+       * GET /api/metrics/summary: Aggregate total violations, severity counts, and calculate a "Compliance Health Score" (weighted by critical/serious issues).
+       * GET /api/metrics/violations: Provide a detailed breakdown of pages, their functional areas, and specific violations.
+       * DELETE /api/files/batch: Support deleting multiple selected files at once.
+       * DELETE /api/clear: Wipe all data for a fresh start.
+       * PDF Export: Create a GET /api/export/pdf endpoint using fpdf2.
+           * Layout: Landscape orientation.
+           * Content: Executive summary, technical charts (as tables), and detailed page-level findings.
+           * Resilience: Use character-level auto-wrapping for long URLs and code snippets to prevent horizontal cutoff. Include embedded screenshots as "Visual Evidence."
 
-1. Clone or download this project
-2. Install dependencies:
+ 
 
-```bash
-npm install
-```
+  3. Frontend (HTML5 + Tailwind CSS + Chart.js):
+   * Tabbed Interface:
+       1. Compliance Health Summary: Display key KPIs and doughnut/bar charts for severity and functional areas.
+       2. Defect Technical Analysis: A searchable grid table (Functional Area, URL, Critical/Serious counts).
+       3. Manage Audit Data: A file list with checkboxes, "Select All," "Delete Selected," "Reset to Default," and "Import Folder."
+   * Technical Detail Modal:
+       * Clicking "View Details" opens a modal.
+       * Gallery First: Show a "Page Context & Visual Evidence" gallery at the very top of the modal.
+       * Violation List: Show impact tags, remediation guides (links), and failing code snippets with target selectors.
 
-3. Install Playwright browsers:
+ 
 
-```bash
-npm run install-browsers
-```
+  4. Design Aesthetic:
+   * Modern, clean CLI-inspired dashboard.
+   * Use Tailwind colors: Blue for info, Red for critical issues, Orange for serious issues, Purple for exports, and Teal/Green for imports.
+   * Responsive layout with fixed navigation and scrollable modals.
 
-## Usage
+ 
 
-1. Start the application:
+  ---
 
-```bash
-npm start
-```
+ 
 
-2. **Configure the target**:
-   - Enter the URL of the web page with the upload form
-   - Specify the CSS selector for the file input (default: `input[type='file']`)
-   - Optionally add a submit button selector
-
-3. **Add custom steps** (optional):
-   - Click "Add Step" to add pre-upload automation steps
-   - Common uses: login forms, navigating to upload page
-   - Supported actions: click, fill, type, wait, navigate, press key
-
-4. **Select documents**:
-   - Click "Select Folder" to choose a folder with JSON/CSV files
-   - Use checkboxes to select which files to upload
-   - Click "Preview" to view file contents
-
-5. **Start automation**:
-   - Click "Start Automation" to begin
-   - Watch the browser automation in action (or run headless)
-   - Monitor progress and logs in real-time
-
-## Custom Steps
-
-Custom steps let you automate actions before the upload process begins. This is useful for:
-
-- Logging into protected areas
-- Navigating through multi-page forms
-- Accepting cookie banners or modals
-- Any preparatory actions
-
-### Available Actions
-
-| Action | Description | Parameters |
-|--------|-------------|------------|
-| `click` | Click an element | selector |
-| `fill` | Fill an input field | selector, value |
-| `type` | Type text with delays | selector, value |
-| `wait` | Wait for duration | duration (ms) |
-| `waitForSelector` | Wait for element | selector |
-| `navigate` | Go to URL | url |
-| `press` | Press keyboard key | key |
-
-## Configuration Options
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| Target URL | The page URL with upload form | - |
-| Upload Selector | CSS selector for file input | `input[type='file']` |
-| Submit Selector | CSS selector for submit button | - |
-| Wait After Upload | Delay after file selection (ms) | 2000 |
-| Wait After Submit | Delay after clicking submit (ms) | 3000 |
-| Headless Mode | Run browser invisibly | false |
-
-## Development
-
-To run in development mode with DevTools:
-
-```bash
-npm start -- --dev
-```
-
-## Project Structure
-
-```
-UITester/
-├── package.json
-├── README.md
-├── src/
-│   ├── main.js           # Electron main process
-│   ├── preload.js        # IPC bridge
-│   ├── automation.js     # Playwright automation engine
-│   └── renderer/
-│       ├── index.html    # UI markup
-│       ├── styles.css    # Styling
-│       └── renderer.js   # UI logic
-└── assets/
-    └── icon.png          # App icon
-```
-
-## Troubleshooting
-
-### Browser doesn't launch
-- Ensure Playwright browsers are installed: `npm run install-browsers`
-- Try running without headless mode first
-
-### Files not uploading
-- Check that your file input selector is correct
-- Use browser DevTools to inspect the actual selector
-- Some sites use hidden file inputs - try selecting the parent element
-
-### Custom steps not working
-- Verify selectors are correct using browser DevTools
-- Add wait steps between actions if the page loads slowly
-- Check the logs for error messages
+  Recommended File Structure for the Prompt:
+   * Dashboard/backend/main.py: FastAPI server and API logic.
+   * Dashboard/backend/parser.py: Logic for aggregating JSON data and fuzzy-linking images.
+   * Dashboard/backend/exporter.py: PDF generation logic using fpdf2 (Landscape).
+   * Dashboard/frontend/index.html: Main UI structure.
+   * Dashboard/frontend/app.js: Data fetching, Chart.js initialization, and modal rendering.
+   * Dashboard/backend/requirements.txt: fastapi, uvicorn, python-multipart, fpdf2, pydantic.
